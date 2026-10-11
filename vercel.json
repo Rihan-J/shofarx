@@ -1,11 +1,1 @@
-{
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [
-    { "source": "/api/auth/:path*", "destination": "/api/auth" },
-    { "source": "/api/admin/:path*", "destination": "/api/admin" },
-    { "source": "/api/ai", "destination": "/api/ai" },
-    { "source": "/api/upload", "destination": "/api/upload" },
-    { "source": "/api/:path*", "destination": "/api/public" },
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
-}
+{}
