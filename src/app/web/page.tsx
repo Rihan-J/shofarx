@@ -10,8 +10,17 @@ import { Footer } from '../../components/web/Footer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Website Development | Shofar-X',
-  description: 'High-performance, scalable websites that drive results and elevate your brand online.',
+  title: 'Custom Website Development & Next.js Web Applications',
+  description: 'Bespoke web development, Next.js web applications, e-commerce platforms, and blazing-fast digital experiences engineered to rank #1 and convert visitors into customers.',
+  alternates: {
+    canonical: 'https://shofarx.com/web',
+  },
+  openGraph: {
+    title: 'Custom Website Development & Next.js Apps | Shofar-X',
+    description: 'High-performance, scalable websites and custom web applications engineered to dominate search results and scale revenue.',
+    url: 'https://shofarx.com/web',
+    images: [{ url: '/shofarx-logo.webp', width: 1200, height: 630, alt: 'Shofar-X Web Development' }],
+  },
 };
 
 const strengthsItems = [

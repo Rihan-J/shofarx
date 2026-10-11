@@ -10,8 +10,17 @@ import { SocialLenis } from '../../components/social/SocialLenis';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Social Media Marketing | Shofar-X',
-  description: 'Content, campaigns, and strategy engineered to turn everyday scroll attention into loyal paying customers.',
+  title: 'Social Media Marketing, Content Creation & Videography',
+  description: 'Viral reels, organic audience growth, performance ad campaigns, commercial photography, and 4K videography engineered to turn scroll attention into paying customers.',
+  alternates: {
+    canonical: 'https://shofarx.com/social',
+  },
+  openGraph: {
+    title: 'Social Media Marketing, Content Creation & Videography | Shofar-X',
+    description: 'High-growth social media campaigns, reels production, and commercial media engineered to dominate your niche.',
+    url: 'https://shofarx.com/social',
+    images: [{ url: '/shofarx-logo.webp', width: 1200, height: 630, alt: 'Shofar-X Social Media Marketing' }],
+  },
 };
 
 export default function SocialPage() {
