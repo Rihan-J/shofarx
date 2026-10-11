@@ -1,0 +1,256 @@
+/* ============================================================
+   Shofar-X — Premium UI / UX Overhaul
+   ============================================================ */
+@import url('./premium-hero.css');
+
+/* ── 8px Grid System & Variables ── */
+:root {
+  --spacing-1: 8px;
+  --spacing-2: 16px;
+  --spacing-3: 24px;
+  --spacing-4: 32px;
+  --spacing-5: 40px;
+  --spacing-6: 48px;
+  --spacing-8: 64px;
+  --spacing-12: 96px;
+  --spacing-16: 128px;
+  
+  --premium-glow: rgba(128, 0, 0, 0.04);
+  --premium-border: rgba(128, 0, 0, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.6);
+}
+
+.web-page-premium {
+  min-height: 100dvh;
+  background: var(--bg-surface);
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--text-primary);
+  overflow-x: clip; /* 'clip' prevents horizontal scroll without breaking position:sticky */
+  position: relative;
+}
+
+/* ── Hero Subtle Premium Effects ── */
+.wh__bg-glow {
+  position: absolute;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, var(--premium-glow) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+  animation: pulse-glow 10s ease-in-out infinite alternate;
+}
+
+.wh__bg-glow--top {
+  top: -20%;
+  right: -10%;
+}
+
+.wh__bg-glow--bottom {
+  bottom: -20%;
+  left: -10%;
+}
+
+@keyframes pulse-glow {
+  0% { transform: scale(1) translate(0, 0); opacity: 0.8; }
+  100% { transform: scale(1.1) translate(-2%, 2%); opacity: 1; }
+}
+
+.wh__noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+
+.wh__inner {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Magnetic Buttons (Micro Interactions) ── */
+.magnetic-btn {
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.magnetic-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(128, 0, 0, 0.15);
+}
+
+/* ── Premium Projects (Case Study Layout) ── */
+.w-section {
+  padding: var(--spacing-16) clamp(1.5rem, 5vw, 4rem);
+  position: relative;
+}
+
+.w-section__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.w-section__eyebrow {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-primary);
+  margin-bottom: var(--spacing-2);
+  line-height: 1.5 !important;
+  display: inline-block !important;
+  padding: 4px 0 !important;
+  overflow: visible !important;
+}
+
+.w-section__heading {
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-family: 'Lora', Georgia, serif;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--spacing-8);
+}
+
+/* Empty States */
+.w-empty-state {
+  padding: var(--spacing-8);
+  text-align: center;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px dashed var(--premium-border);
+  border-radius: 16px;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+/* Case Study Cards */
+.w-projects__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+}
+
+.wpc-premium {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--spacing-8);
+  align-items: center;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: var(--spacing-4);
+  border: 1px solid var(--premium-border);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.wpc-premium:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(128, 0, 0, 0.08);
+}
+
+.wpc-premium--reversed {
+  grid-template-columns: 1fr 1.2fr;
+}
+
+.wpc-premium--reversed .wpc-premium__thumb {
+  order: 2;
+}
+
+.wpc-premium--reversed .wpc-premium__body {
+  order: 1;
+}
+
+.wpc-premium__thumb {
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 16/10;
+  position: relative;
+  background: var(--bg-surface);
+}
+
+.wpc-premium__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wpc-premium:hover .wpc-premium__thumb img {
+  transform: scale(1.03);
+}
+
+.wpc-premium__body {
+  padding: var(--spacing-4);
+}
+
+.wpc-premium__category {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-primary);
+  margin-bottom: var(--spacing-2);
+  display: block;
+}
+
+.wpc-premium__title {
+  font-size: clamp(1.8rem, 2.5vw, 2.2rem);
+  font-family: 'Lora', Georgia, serif;
+  margin-bottom: var(--spacing-3);
+  color: var(--text-primary);
+}
+
+.wpc-premium__desc {
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-5);
+}
+
+.wpc-premium__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent-primary);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent-primary);
+  padding-bottom: 2px;
+  transition: opacity 0.2s ease;
+}
+
+.wpc-premium__link:hover {
+  opacity: 0.8;
+}
+
+/* Contact Premium Tweaks */
+.wc__heading-premium {
+  font-size: clamp(3rem, 5vw, 4rem) !important;
+  line-height: 1.05 !important;
+  margin-bottom: var(--spacing-4) !important;
+}
+
+/* Responsive Overrides */
+@media (max-width: 992px) {
+  .wpc-premium {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-4);
+    padding: var(--spacing-2);
+  }
+  
+  .wpc-premium--reversed .wpc-premium__thumb {
+    order: -1;
+  }
+  
+  .wpc-premium--reversed .wpc-premium__body {
+    order: 2;
+  }
+}

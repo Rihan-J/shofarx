@@ -1,0 +1,158 @@
+/* ============================================================
+   Projects Grid — Card styles only (section uses w-services classes)
+   ============================================================ */
+
+/* 3-column grid */
+.proj-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+/* Individual card — clean white, thick solid border */
+.proj-item {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 16px var(--border-color);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.proj-item:hover,
+.proj-item.mobile-hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px var(--border-color);
+  background-color: var(--accent-primary-dim);
+}
+
+/* Image container */
+.proj-item__img-wrap {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: var(--bg-surface);
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.proj-item__img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 0.4s ease;
+}
+
+.proj-item:hover .proj-item__img {
+  transform: scale(1.04);
+}
+
+/* Project Number Badge */
+.proj-item__number {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--accent-primary);
+  color: #ffffff;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 100px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Content area */
+.proj-item__info {
+  padding: 24px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* Title — bold, dark */
+.proj-item__title {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+}
+
+/* Description — readable body text */
+.proj-item__desc {
+  font-size: 0.92rem;
+  color: #5c4444;
+  line-height: 1.65;
+  margin: 0;
+  flex-grow: 1;
+}
+
+/* "View Live Site ↗" link — simple text link */
+.proj-item__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 18px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+  transition: color 0.2s ease;
+}
+
+.proj-item__link:hover {
+  color: var(--accent-primary);
+}
+
+.proj-item__arrow {
+  font-size: 1rem;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.proj-item__link:hover .proj-item__arrow {
+  transform: translate(2px, -2px);
+}
+
+/* ── Tablet: 2 columns ── */
+@media (max-width: 900px) {
+  .proj-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+/* ── Mobile: 1 column ── */
+@media (max-width: 600px) {
+  .proj-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .proj-item__img-wrap {
+    height: 180px;
+  }
+
+  .proj-item__info {
+    padding: 20px 20px 24px;
+  }
+
+  .proj-item__title {
+    font-size: 1.15rem;
+  }
+
+  .proj-item__desc {
+    font-size: 0.88rem;
+  }
+}

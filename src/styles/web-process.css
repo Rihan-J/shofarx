@@ -1,0 +1,928 @@
+/* ============================================================
+   Process — Clean Static Cards Flow (No Scroll/Sticky Animation)
+   ============================================================ */
+
+.wpc {
+  position: relative;
+  background: transparent;
+  width: 100%;
+  padding: 120px 24px;
+  overflow: hidden;
+}
+
+/* Subtle background glow to match hero section */
+.wpc::before {
+  content: '';
+  position: absolute;
+  top: 40%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(128, 0, 0, 0.04) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wpc::after {
+  content: '';
+  position: absolute;
+  bottom: 10%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(128, 0, 0, 0.03) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wpc__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* Header */
+.wpc__header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 64px;
+  position: relative;
+  z-index: 5;
+}
+
+.wpc__eyebrow-wrapper {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.wpc__eyebrow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  background: rgba(128, 0, 0, 0.06);
+  border: 1px solid rgba(128, 0, 0, 0.18);
+  padding: 8px 22px;
+  border-radius: 100px;
+  box-shadow: 0 4px 20px rgba(128, 0, 0, 0.06);
+  overflow: hidden;
+  cursor: default;
+}
+
+/* Shimmer sweep effect across eyebrow badge */
+.wpc__eyebrow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.85) 50%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  animation: eyebrow-shimmer 3.5s infinite cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+@keyframes eyebrow-shimmer {
+  0% { left: -150%; }
+  35% { left: 150%; }
+  100% { left: 150%; }
+}
+
+.wpc__eyebrow-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 10px var(--accent-primary);
+  animation: dot-pulse 1.5s infinite alternate ease-in-out;
+  flex-shrink: 0;
+}
+
+@keyframes dot-pulse {
+  0% { transform: scale(0.85); opacity: 0.6; box-shadow: 0 0 4px var(--accent-primary); }
+  100% { transform: scale(1.35); opacity: 1; box-shadow: 0 0 14px var(--accent-primary); }
+}
+
+.wpc__heading {
+  font-family: 'Lora', Georgia, serif;
+  font-size: clamp(2.6rem, 5vw, 4.2rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  position: relative;
+  display: inline-block;
+}
+
+/* Animated glowing gradient for "Process" */
+.wpc__heading-em {
+  color: transparent;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-primary) 50%, var(--accent-primary) 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-style: italic;
+  display: inline-block;
+  padding-right: 0.05em;
+  animation: gradient-shift 5s ease infinite alternate;
+  filter: drop-shadow(0 4px 16px rgba(204, 51, 51, 0.22));
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* Floating sparkle icon */
+.wpc__heading-sparkle {
+  display: inline-block;
+  font-style: normal;
+  font-size: 0.55em;
+  vertical-align: super;
+  margin-left: 8px;
+  color: var(--accent-primary);
+  filter: drop-shadow(0 0 10px rgba(204, 51, 51, 0.5));
+}
+
+/* Card stack area */
+.wpc__stack {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  perspective: 2000px;
+}
+
+/* Card wrapper */
+.wpc__card-wrapper {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+/* Premium Light Glass card */
+.wpc__card {
+  position: relative;
+  width: 100%;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid var(--border-color);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.03),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Mouse spotlight */
+.wpc__spotlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    600px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(128, 0, 0, 0.06),
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.wpc__card-wrapper:hover .wpc__spotlight {
+  opacity: 1;
+}
+.wpc__card-wrapper:hover .wpc__card {
+  border-color: rgba(128, 0, 0, 0.18);
+  box-shadow:
+    0 30px 60px rgba(128, 0, 0, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 1);
+  transform: translateY(-4px);
+}
+
+.wpc__card-inner {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 44px 52px;
+  position: relative;
+  z-index: 1;
+}
+
+.wpc__left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  min-width: 70px;
+}
+.wpc__num {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 3.5rem;
+  font-weight: 600;
+  color: rgba(128, 0, 0, 0.15);
+  line-height: 1;
+  letter-spacing: -2px;
+  transition: color 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wpc__card-wrapper:hover .wpc__num {
+  color: rgba(128, 0, 0, 0.35);
+  transform: scale(1.05);
+}
+.wpc__icon {
+  font-size: 2rem;
+  opacity: 0.9;
+  filter: drop-shadow(0 4px 8px var(--border-color));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.wpc__card-wrapper:hover .wpc__icon {
+  transform: scale(1.15) rotate(6deg);
+}
+
+.wpc__right {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.wpc__title {
+  font-family: 'Lora', Georgia, serif;
+  font-size: clamp(1.4rem, 2.3vw, 2rem);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.2;
+  transition: color 0.3s ease;
+}
+.wpc__card-wrapper:hover .wpc__title {
+  color: var(--accent-primary);
+}
+.wpc__desc {
+  font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+.wpc__progress-bar {
+  height: 4px;
+  background: rgba(128, 0, 0, 0.06);
+  margin: 0 52px 28px;
+  border-radius: 999px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+.wpc__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-primary));
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Responsive Adaptations ── */
+@media (max-width: 768px) {
+  .wpc {
+    padding: 80px 16px;
+  }
+  .wpc__header {
+    margin-bottom: 44px;
+  }
+  .wpc__eyebrow {
+    font-size: 0.72rem;
+    padding: 7px 16px;
+    gap: 8px;
+    letter-spacing: 2px;
+  }
+  .wpc__heading {
+    font-size: clamp(2.2rem, 8vw, 2.8rem);
+    line-height: 1.2;
+  }
+  .wpc__heading-sparkle {
+    margin-left: 4px;
+    font-size: 0.5em;
+  }
+  .wpc__stack {
+    gap: 20px;
+  }
+  .wpc__card-inner {
+    padding: 32px 24px;
+    gap: 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .wpc__left {
+    flex-direction: row;
+    gap: 16px;
+    min-width: auto;
+    align-items: center;
+  }
+  .wpc__num {
+    font-size: 2.5rem;
+  }
+  .wpc__icon {
+    font-size: 1.6rem;
+  }
+  .wpc__title {
+    font-size: 1.35rem;
+  }
+  .wpc__desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .wpc__progress-bar {
+    margin: 0 24px 24px;
+  }
+}
+
+/* ============================================================
+   3D Interactive Orbital Cube & Rings
+   ============================================================ */
+.wpc-3d-wrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 36px auto 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  cursor: grab;
+  z-index: 10;
+  user-select: none;
+}
+.wpc-3d-wrapper:active {
+  cursor: grabbing;
+}
+
+.wpc-3d-scene {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  transform-style: preserve-3d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 3D Orbiting Rings */
+.wpc-3d-ring {
+  position: absolute;
+  width: 170px;
+  height: 170px;
+  border: 2px dashed rgba(204, 51, 51, 0.45);
+  border-radius: 50%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+  box-shadow: 0 0 20px rgba(204, 51, 51, 0.12);
+}
+
+.wpc-3d-ring::before {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  box-shadow: 0 0 16px var(--accent-primary);
+  transform: translateX(-50%);
+}
+
+.wpc-3d-ring--alt {
+  width: 145px;
+  height: 145px;
+  border: 2px solid rgba(128, 0, 0, 0.25);
+  border-style: dotted;
+}
+.wpc-3d-ring--alt::before {
+  background: var(--accent-primary);
+  width: 10px;
+  height: 10px;
+  top: auto;
+  bottom: -5px;
+}
+
+/* 3D Glass Cube */
+.wpc-3d-cube {
+  width: 76px;
+  height: 76px;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.cube-face {
+  position: absolute;
+  width: 76px;
+  height: 76px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 235, 235, 0.75));
+  border: 1.5px solid rgba(204, 51, 51, 0.45);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 0 18px rgba(204, 51, 51, 0.18),
+    0 6px 16px var(--border-color);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  user-select: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.wpc-3d-wrapper:hover .cube-face {
+  border-color: rgba(204, 51, 51, 0.7);
+  box-shadow:
+    inset 0 0 25px rgba(204, 51, 51, 0.3),
+    0 8px 24px rgba(128, 0, 0, 0.15);
+}
+
+.cube-face--front  { transform: rotateY(  0deg) translateZ(38px); }
+.cube-face--back   { transform: rotateY(180deg) translateZ(38px); }
+.cube-face--right  { transform: rotateY( 90deg) translateZ(38px); }
+.cube-face--left   { transform: rotateY(-90deg) translateZ(38px); }
+.cube-face--top    { transform: rotateX( 90deg) translateZ(38px); }
+.cube-face--bottom { transform: rotateX(-90deg) translateZ(38px); }
+
+/* 3D Ground Shadow */
+.wpc-3d-shadow {
+  width: 140px;
+  height: 22px;
+  background: radial-gradient(ellipse at center, rgba(128, 0, 0, 0.22) 0%, transparent 70%);
+  border-radius: 50%;
+  margin-top: 40px;
+  animation: shadow-breathe 4s infinite ease-in-out alternate;
+  pointer-events: none;
+}
+
+@keyframes shadow-breathe {
+  0% { transform: scale(0.85); opacity: 0.4; }
+  100% { transform: scale(1.15); opacity: 0.85; }
+}
+
+/* ── 3D Card Parallax Pop-out Enhancements ── */
+.wpc__card {
+  transform-style: preserve-3d;
+}
+.wpc__card-inner {
+  transform-style: preserve-3d;
+}
+.wpc__left, .wpc__right {
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wpc__card-wrapper:hover .wpc__left {
+  transform: translateZ(55px);
+}
+.wpc__card-wrapper:hover .wpc__right {
+  transform: translateZ(38px);
+}
+.wpc__card-wrapper:hover .wpc__num {
+  text-shadow: 0 14px 28px rgba(128, 0, 0, 0.28);
+}
+
+/* Responsive 3D Adaptation */
+@media (max-width: 768px) {
+  .wpc-3d-wrapper {
+    transform: scale(0.88);
+    margin: 20px auto 10px;
+  }
+}
+
+/* ============================================================
+   Sticky-Pin Showcase Layout for Process
+   ============================================================ */
+.wpc--showcase {
+  position: relative;
+  width: 100%;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.wpc__pin {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.wpc__showcase-stage {
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+  perspective: 1600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.wpc__card-wrapper--active {
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .wpc__pin {
+    padding: 16px 0;
+  }
+  .wpc__showcase-stage {
+    min-height: 280px;
+    margin-top: 10px;
+  }
+  .wpc__header {
+    margin-bottom: 24px;
+  }
+}
+
+/* ============================================================
+   Milestone-Based Journey Roadmap Layout
+   ============================================================ */
+.milestone-arena {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 40px;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .milestone-arena {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .milestone-track-container {
+    height: auto;
+    flex-direction: row;
+    overflow-x: auto;
+    padding: 10px 0 20px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+  }
+  .milestone-track-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome/Safari */
+  }
+  .milestone-track-bg {
+    top: 34px;
+    left: 20px;
+    right: 20px;
+    bottom: auto;
+    height: 4px;
+    width: auto;
+  }
+  .milestone-track-fill {
+    top: 34px;
+    left: 20px;
+    bottom: auto;
+    height: 4px;
+    width: var(--progress-width, 0%);
+    background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-primary) 100%);
+    transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .milestone-node {
+    flex-direction: column;
+    text-align: center;
+    min-width: 120px;
+  }
+}
+
+/* Left: Vertical Track */
+.milestone-track-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 380px;
+  padding: 10px 0;
+}
+
+.milestone-track-bg {
+  position: absolute;
+  left: 34px;
+  top: 30px;
+  bottom: 30px;
+  width: 4px;
+  background: var(--border-color);
+  border-radius: 4px;
+  z-index: 0;
+}
+
+.milestone-track-fill {
+  position: absolute;
+  left: 34px;
+  top: 30px;
+  width: 4px;
+  background: linear-gradient(180deg, var(--accent-primary) 0%, var(--accent-primary) 100%);
+  border-radius: 4px;
+  z-index: 1;
+  transition: height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 12px rgba(204, 51, 51, 0.5);
+}
+
+.milestone-node {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 8px 12px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.milestone-node:hover {
+  background: rgba(128, 0, 0, 0.04);
+}
+
+.milestone-node__circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 0.95rem;
+  background: #ffffff;
+  border: 2px solid rgba(128, 0, 0, 0.2);
+  color: var(--accent-primary);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+  position: relative;
+}
+
+/* Completed node */
+.milestone-node--completed .milestone-node__circle {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(128, 0, 0, 0.3);
+}
+
+/* Active pulsating node */
+.milestone-node--active .milestone-node__circle {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-primary));
+  border-color: var(--accent-primary);
+  color: #ffffff;
+  transform: scale(1.15);
+  box-shadow: 0 0 24px rgba(204, 51, 51, 0.6);
+}
+
+.milestone-node--active .milestone-node__circle::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid var(--accent-primary);
+  animation: milestone-radar 2s infinite ease-out;
+}
+
+@keyframes milestone-radar {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.milestone-node__label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.milestone-node__num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(128, 0, 0, 0.5);
+}
+
+.milestone-node--active .milestone-node__num {
+  color: var(--accent-primary);
+  font-weight: 800;
+}
+
+.milestone-node__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.milestone-node--active .milestone-node__title {
+  color: var(--accent-primary);
+  font-weight: 700;
+}
+
+/* Right: Active Milestone Achievement Card */
+.milestone-card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 36px;
+  border: 1px solid rgba(128, 0, 0, 0.15);
+  box-shadow: 
+    0 20px 60px rgba(128, 0, 0, 0.08), 
+    0 4px 16px var(--border-color);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.milestone-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--accent-primary) 0%, var(--accent-primary) 50%, #ff9999 100%);
+}
+
+.milestone-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.milestone-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  background: rgba(128, 0, 0, 0.06);
+  border: 1px solid rgba(128, 0, 0, 0.18);
+  border-radius: 100px;
+}
+
+.milestone-status {
+  font-family: monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+  background: var(--accent-primary);
+  padding: 4px 12px;
+  border-radius: 100px;
+  letter-spacing: 1px;
+}
+
+.milestone-card__title {
+  font-family: 'Lora', Georgia, serif;
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.milestone-card__desc {
+  font-size: clamp(0.98rem, 1.1vw, 1.08rem);
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+.milestone-deliverable {
+  margin-top: 10px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #fff5f5 0%, #fdf0eb 100%);
+  border: 1px solid rgba(128, 0, 0, 0.12);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.milestone-deliverable__label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(128, 0, 0, 0.6);
+}
+
+.milestone-deliverable__value {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+@media (max-width: 900px) {
+  .wpc__container {
+    width: 96% !important;
+    max-width: 720px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+  .milestone-arena {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .milestone-track-container {
+    flex-direction: row;
+    height: auto;
+    width: 100%;
+    overflow-x: auto;
+    padding: 10px 0 16px;
+    gap: 16px;
+  }
+  .milestone-track-bg, .milestone-track-fill {
+    display: none;
+  }
+  .milestone-node {
+    flex-direction: column;
+    text-align: center;
+    padding: 8px;
+    min-width: 100px;
+  }
+  .milestone-node__title {
+    font-size: 0.8rem;
+  }
+  .milestone-card {
+    padding: 24px;
+  }
+  .milestone-card__title {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .wpc__container {
+    width: 98% !important;
+    max-width: 100% !important;
+    padding: 0 4px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+  .milestone-card {
+    padding: 20px;
+    border-radius: 20px;
+    gap: 14px;
+  }
+  .milestone-card__title {
+    font-size: 1.25rem;
+  }
+  .milestone-card__desc {
+    font-size: 0.9rem;
+  }
+  .milestone-deliverable {
+    padding: 12px 16px;
+  }
+  .milestone-deliverable__value {
+    font-size: 0.92rem;
+  }
+}
+

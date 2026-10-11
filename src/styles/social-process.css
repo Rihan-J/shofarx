@@ -1,0 +1,12 @@
+/* social-process.css */
+/* Reusing case-studies-showcase.css for core functionality. */
+/* Custom tweaks for the social process can go here. */
+
+.social-process-section .cs-card__thumb-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: white;
+}

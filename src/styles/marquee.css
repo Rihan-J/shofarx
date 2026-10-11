@@ -1,0 +1,101 @@
+/* src/styles/marquee.css */
+.wh-marquee-section {
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--bg-surface);
+  padding: 16px 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  position: relative;
+}
+
+.wh-marquee-section::before,
+.wh-marquee-section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 150px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.wh-marquee-section::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-surface) 0%, transparent 100%);
+}
+
+.wh-marquee-section::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-surface) 0%, transparent 100%);
+}
+
+.wh-marquee-track {
+  display: flex;
+  white-space: nowrap;
+  animation: wh-marquee-scroll 30s linear infinite;
+  width: fit-content;
+}
+
+.wh-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: var(--fluid-p, 1rem);
+  font-weight: 600;
+  color: var(--text-primary);
+  padding: 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.wh-marquee-dot {
+  width: 6px;
+  height: 6px;
+  background-color: var(--accent-primary); /* Official Brand Accent */
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 8px rgba(225, 29, 72, 0.4);
+}
+
+@keyframes wh-marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); } 
+}
+
+.wh-marquee-track.reverse {
+  animation: wh-marquee-scroll-reverse 35s linear infinite;
+}
+
+@keyframes wh-marquee-scroll-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+/* Pause on hover for better UX */
+.wh-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (max-width: 768px) {
+  .wh-marquee-item {
+    font-size: var(--fluid-p);
+    padding: 0 12px;
+    gap: 12px;
+  }
+  .wh-marquee-section {
+    padding: 12px 0;
+  }
+  .wh-marquee-section::before,
+  .wh-marquee-section::after {
+    width: 30px;
+  }
+  .wh-marquee-track {
+    animation-duration: 20s;
+  }
+  .wh-marquee-track.reverse {
+    animation-duration: 22s;
+  }
+}
